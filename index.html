@@ -741,6 +741,25 @@
     width: 100%;
     height: 85%;
   }
+  .project-tile .tile-visual img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* Subtle gradient overlay to keep the status label readable over photos */
+  .project-tile .tile-visual.has-photo::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(180deg, rgba(5,5,7,0.6), transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .project-tile .tile-visual.has-photo .tile-status { z-index: 2; }
   .project-tile .tile-status {
     position: absolute;
     top: 16px; left: 16px;
@@ -1298,36 +1317,9 @@
 
       <!-- LATITUDE SAMUI — Active -->
       <article class="project-tile active">
-        <div class="tile-visual">
+        <div class="tile-visual has-photo">
           <span class="tile-status">In development · 2026</span>
-          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
-            <circle cx="320" cy="70" r="26" fill="#d4ff3a" opacity="0.4"/>
-            <circle cx="320" cy="70" r="16" fill="#d4ff3a" opacity="0.7"/>
-            <line x1="0" y1="170" x2="400" y2="170" stroke="#d4ff3a" stroke-width="0.5" opacity="0.4" stroke-dasharray="2,4"/>
-            <path d="M 50 170 Q 100 158 150 168 T 220 170 L 220 170 L 50 170 Z" fill="#d4ff3a" opacity="0.15"/>
-            <line x1="60" y1="170" x2="58" y2="245" stroke="#d4ff3a" stroke-width="1.5" opacity="0.6"/>
-            <path d="M 58 170 Q 35 165 30 155" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <path d="M 58 170 Q 80 163 88 155" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <path d="M 58 170 Q 45 158 38 148" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <path d="M 58 170 Q 72 158 80 148" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <g opacity="0.85">
-              <rect x="140" y="190" width="180" height="55" fill="none" stroke="#d4ff3a" stroke-width="1.2"/>
-              <line x1="140" y1="190" x2="320" y2="190" stroke="#d4ff3a" stroke-width="1.5"/>
-              <line x1="130" y1="190" x2="330" y2="190" stroke="#d4ff3a" stroke-width="1.5"/>
-              <line x1="170" y1="190" x2="170" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
-              <line x1="210" y1="190" x2="210" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
-              <line x1="250" y1="190" x2="250" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
-              <line x1="290" y1="190" x2="290" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
-              <rect x="175" y="205" width="30" height="35" fill="#d4ff3a" opacity="0.15"/>
-              <rect x="215" y="205" width="30" height="35" fill="#d4ff3a" opacity="0.25"/>
-              <rect x="255" y="205" width="30" height="35" fill="#d4ff3a" opacity="0.15"/>
-            </g>
-            <ellipse cx="230" cy="265" rx="120" ry="6" fill="#d4ff3a" opacity="0.2"/>
-            <line x1="360" y1="190" x2="362" y2="255" stroke="#d4ff3a" stroke-width="1.5" opacity="0.6"/>
-            <path d="M 362 190 Q 385 185 392 175" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <path d="M 362 190 Q 340 183 332 175" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <line x1="0" y1="285" x2="400" y2="285" stroke="#d4ff3a" stroke-width="0.6" opacity="0.4"/>
-          </svg>
+          <img src="pictures/Fichier (1).jpg" alt="Latitude Samui — villa project on Koh Samui, Thailand" loading="lazy">
         </div>
         <div class="tile-body">
           <div class="tile-loc">Koh Samui · Thailand</div>
@@ -1381,23 +1373,32 @@
         <div class="tile-visual">
           <span class="tile-status">Coming soon</span>
           <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
-            <circle cx="200" cy="75" r="28" fill="#d4ff3a" opacity="0.3"/>
-            <circle cx="200" cy="75" r="16" fill="#d4ff3a" opacity="0.5"/>
-            <line x1="0" y1="170" x2="400" y2="170" stroke="#d4ff3a" stroke-width="0.5" opacity="0.3" stroke-dasharray="2,4"/>
-            <g opacity="0.7">
-              <polygon points="80,210 130,140 180,210" fill="none" stroke="#d4ff3a" stroke-width="1"/>
-              <polygon points="140,210 200,120 260,210" fill="none" stroke="#d4ff3a" stroke-width="1"/>
-              <polygon points="220,210 270,150 320,210" fill="none" stroke="#d4ff3a" stroke-width="1"/>
+            <circle cx="320" cy="70" r="26" fill="#d4ff3a" opacity="0.4"/>
+            <circle cx="320" cy="70" r="16" fill="#d4ff3a" opacity="0.7"/>
+            <line x1="0" y1="170" x2="400" y2="170" stroke="#d4ff3a" stroke-width="0.5" opacity="0.4" stroke-dasharray="2,4"/>
+            <path d="M 50 170 Q 100 158 150 168 T 220 170 L 220 170 L 50 170 Z" fill="#d4ff3a" opacity="0.15"/>
+            <line x1="60" y1="170" x2="58" y2="245" stroke="#d4ff3a" stroke-width="1.5" opacity="0.6"/>
+            <path d="M 58 170 Q 35 165 30 155" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 58 170 Q 80 163 88 155" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 58 170 Q 45 158 38 148" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 58 170 Q 72 158 80 148" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <g opacity="0.85">
+              <rect x="140" y="190" width="180" height="55" fill="none" stroke="#d4ff3a" stroke-width="1.2"/>
+              <line x1="140" y1="190" x2="320" y2="190" stroke="#d4ff3a" stroke-width="1.5"/>
+              <line x1="130" y1="190" x2="330" y2="190" stroke="#d4ff3a" stroke-width="1.5"/>
+              <line x1="170" y1="190" x2="170" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <line x1="210" y1="190" x2="210" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <line x1="250" y1="190" x2="250" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <line x1="290" y1="190" x2="290" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <rect x="175" y="205" width="30" height="35" fill="#d4ff3a" opacity="0.15"/>
+              <rect x="215" y="205" width="30" height="35" fill="#d4ff3a" opacity="0.25"/>
+              <rect x="255" y="205" width="30" height="35" fill="#d4ff3a" opacity="0.15"/>
             </g>
-            <g opacity="0.6">
-              <rect x="60" y="220" width="280" height="30" fill="none" stroke="#d4ff3a" stroke-width="1"/>
-              <line x1="100" y1="220" x2="100" y2="250" stroke="#d4ff3a" stroke-width="0.5"/>
-              <line x1="150" y1="220" x2="150" y2="250" stroke="#d4ff3a" stroke-width="0.5"/>
-              <line x1="200" y1="220" x2="200" y2="250" stroke="#d4ff3a" stroke-width="0.5"/>
-              <line x1="250" y1="220" x2="250" y2="250" stroke="#d4ff3a" stroke-width="0.5"/>
-              <line x1="300" y1="220" x2="300" y2="250" stroke="#d4ff3a" stroke-width="0.5"/>
-            </g>
-            <line x1="0" y1="270" x2="400" y2="270" stroke="#d4ff3a" stroke-width="0.6" opacity="0.3"/>
+            <ellipse cx="230" cy="265" rx="120" ry="6" fill="#d4ff3a" opacity="0.2"/>
+            <line x1="360" y1="190" x2="362" y2="255" stroke="#d4ff3a" stroke-width="1.5" opacity="0.6"/>
+            <path d="M 362 190 Q 385 185 392 175" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 362 190 Q 340 183 332 175" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <line x1="0" y1="285" x2="400" y2="285" stroke="#d4ff3a" stroke-width="0.6" opacity="0.4"/>
           </svg>
         </div>
         <div class="tile-body">
