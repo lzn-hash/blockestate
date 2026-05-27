@@ -305,6 +305,122 @@
     font-weight: 400;
   }
 
+  /* ── V5 VISION STAGE (overrides .vision when used together) ── */
+  .vision.vision-stage {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px;
+  }
+  .vision-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .vision-statement {
+    font-size: clamp(40px, 5.5vw, 88px);
+    line-height: 1.02;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+  .vision-statement em {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 500;
+  }
+  .vision-statement .accent-block {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0 16px;
+    font-style: italic;
+    font-weight: 500;
+  }
+  .vision-side {
+    border-left: 1px solid var(--accent);
+    padding-left: 40px;
+  }
+  .vision-side .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .vision-side p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    font-weight: 300;
+  }
+  .vision-side p strong { color: var(--ink); font-weight: 500; }
+
+  /* ── SIDE PAGINATION NAV (V5) ── */
+  .side-nav {
+    position: fixed;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 18px;
+  }
+  .side-nav a {
+    /* Fixed-size hit area built around the dot — labels are positioned absolutely so they don't push the dot around */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    color: var(--ink-faint);
+    transition: color 0.3s;
+    position: relative;
+    text-decoration: none;
+  }
+  .side-nav a .label {
+    position: absolute;
+    right: calc(100% + 12px);
+    top: 50%;
+    transform: translate(8px, -50%);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    background: rgba(5,5,7,0.8);
+    padding: 4px 10px;
+    backdrop-filter: blur(8px);
+    pointer-events: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: inherit;
+    white-space: nowrap;
+  }
+  .side-nav a:hover .label,
+  .side-nav a.active .label { opacity: 1; transform: translate(0, -50%); }
+  .side-nav a .dot {
+    width: 8px; height: 8px;
+    border: 1px solid var(--ink-faint);
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+  .side-nav a:hover .dot { border-color: var(--accent); }
+  .side-nav a.active .dot {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.2);
+  }
+  .side-nav a.active { color: var(--accent); }
+
   /* ── SECTION : PILLARS ── */
   .pillars {
     padding: 120px 48px;
@@ -474,6 +590,122 @@
   }
   .spec .spec-value em { color: var(--accent); font-style: italic; }
 
+  /* ── PROJECTS GRID (3 cards: 1 active + 2 coming soon) ── */
+  .projects-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .project-tile {
+    border: 1px solid var(--rule-strong);
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-3));
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: border 0.4s, transform 0.4s;
+  }
+  .project-tile.active { border-color: var(--accent); }
+  .project-tile.active::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .project-tile.active:hover { transform: translateY(-4px); }
+
+  .project-tile .tile-visual {
+    aspect-ratio: 4 / 3;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 30% 70%, rgba(212, 255, 58, 0.15), transparent 50%),
+      linear-gradient(180deg, var(--bg-3), var(--bg));
+    border-bottom: 1px solid var(--rule);
+  }
+  .project-tile .tile-visual svg {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 85%;
+  }
+  .project-tile .tile-status {
+    position: absolute;
+    top: 16px; left: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    z-index: 2;
+  }
+  .project-tile .tile-status::before { content: '● '; }
+
+  .project-tile .tile-body {
+    padding: 28px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+  }
+  .project-tile .tile-loc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .project-tile .tile-name {
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .project-tile .tile-name em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .project-tile .tile-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    flex: 1;
+  }
+  .project-tile .tile-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    transition: background 0.3s;
+    align-self: flex-start;
+  }
+  .project-tile .tile-action:hover { background: var(--ink); }
+
+  /* Coming-soon greyed state */
+  .project-tile.soon {
+    opacity: 0.5;
+    filter: grayscale(0.6);
+    pointer-events: auto;
+  }
+  .project-tile.soon .tile-status { color: var(--ink-faint); }
+  .project-tile.soon .tile-status::before { content: '○ '; }
+  .project-tile.soon .tile-name em { color: var(--ink-soft); }
+  .project-tile.soon .tile-action {
+    background: transparent;
+    border: 1px solid var(--rule-strong);
+    color: var(--ink-faint);
+    pointer-events: none;
+  }
+
   /* ── SECTION : CRYPTO ACCEPTED ── */
   .crypto-band {
     padding: 80px 48px;
@@ -579,6 +811,95 @@
     color: var(--ink);
     font-weight: 400;
   }
+
+  /* ── TEAM CARDS (3 founders) ── */
+  .team-intro {
+    max-width: 900px;
+    margin: 0 auto 64px;
+    text-align: center;
+  }
+  .team-intro .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .team-intro h2 { margin-bottom: 32px; }
+  .team-intro p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    font-weight: 300;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .team-intro p strong { color: var(--ink); font-weight: 400; }
+
+  .team-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .team-card {
+    border: 1px solid var(--rule-strong);
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-3));
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: border 0.4s, transform 0.4s;
+    position: relative;
+  }
+  .team-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .team-card .avatar {
+    width: 64px; height: 64px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Chakra Petch', sans-serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .team-card .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  .team-card .name {
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .team-card .name em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .team-card .bio {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+  .team-card .bio strong { color: var(--ink); font-weight: 400; }
+  .team-card .meta {
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+  .team-card .meta b { color: var(--accent); font-weight: 400; }
 
   /* ── CONTACT / CTA ── */
   .cta {
@@ -690,6 +1011,11 @@
     .hero-crypto-strip { position: static; margin-top: 48px; flex-wrap: wrap; }
     .vision { padding: 80px 24px; }
     .vision-grid { grid-template-columns: 1fr; gap: 40px; }
+    .vision.vision-stage { padding: 80px 24px; min-height: auto; }
+    .vision-layout { grid-template-columns: 1fr; gap: 40px; }
+    .vision-side { padding-left: 24px; }
+    .side-nav { right: 12px; }
+    .side-nav a .label { display: none; }
     .pillars { padding: 80px 24px; }
     .pillars-grid { grid-template-columns: 1fr; }
     .project { padding: 80px 24px; }
@@ -697,6 +1023,8 @@
     .project-visual { min-height: 280px; }
     .project-content { padding: 40px 24px; border-left: none; border-top: 1px solid var(--rule); }
     .project-specs { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .projects-grid { grid-template-columns: 1fr; gap: 16px; }
+    .team-grid { grid-template-columns: 1fr; gap: 16px; }
     .crypto-band { padding: 48px 0; }
     .about { padding: 80px 24px; }
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -715,6 +1043,15 @@
   <canvas id="meteors"></canvas>
 </div>
 
+<!-- SIDE PAGINATION (dot navigation) -->
+<nav class="side-nav" aria-label="Navigation par sections">
+  <a href="#hero" class="active" data-stage="hero"><span class="label">Accueil</span><span class="dot"></span></a>
+  <a href="#vision" data-stage="vision"><span class="label">Vision</span><span class="dot"></span></a>
+  <a href="#approche" data-stage="approche"><span class="label">Approche</span><span class="dot"></span></a>
+  <a href="#projets" data-stage="projets"><span class="label">Projets</span><span class="dot"></span></a>
+  <a href="#equipe" data-stage="equipe"><span class="label">Équipe</span><span class="dot"></span></a>
+</nav>
+
 <nav>
   <div class="logo">
     <div class="logo-mark"></div>
@@ -725,21 +1062,22 @@
     <li><a href="#approche">Approche</a></li>
     <li><a href="#projets">Projets</a></li>
     <li><a href="#equipe">Équipe</a></li>
-    <li><a href="#contact" class="nav-contact">Nous écrire</a></li>
+    <li><a href="mailto:contact@blockestate.com" class="nav-contact">Nous écrire</a></li>
   </ul>
 </nav>
 
 <main>
 
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-meta">EST. 2024 · DUBAI / KOH SAMUI</div>
     <h1 class="hero-title">
       Where real estate<br>meets <em>blockchain</em>.
     </h1>
     <p class="hero-sub">
-      BlockEstate accompagne acquéreurs et investisseurs sur des résidences
-      d'exception, réglées en crypto-actifs. L'immobilier ancré, la rapidité on-chain.
+      BlockEstate est à la fois <strong>opérateur de paiement on-chain</strong> pour l'acquisition
+      de biens immobiliers, et <strong>constructeur de villas de luxe</strong> à travers ses marques
+      Latitude — Samui, Siquijor et Bali.
     </p>
     <div class="hero-actions">
       <a href="#projets" class="btn-primary">Découvrir nos projets</a>
@@ -753,27 +1091,29 @@
   <!-- I -->
   <div class="section-num">— <span>I</span> — VISION</div>
 
-  <section class="vision" id="vision">
-    <div class="vision-grid">
-      <div>
-        <div class="vision-label">— Notre conviction</div>
-        <p class="vision-tagline">L'immobilier physique reste la valeur refuge. La crypto en a redéfini les flux.</p>
-      </div>
-      <div class="vision-text">
-        <h2>Construire le <em>pont</em><br>entre deux mondes.</h2>
+  <section class="vision vision-stage" id="vision">
+    <div class="vision-layout">
+      <h2 class="vision-statement">
+        Construire le <em>pont</em><br>entre <span class="accent-block">deux mondes</span>.
+      </h2>
+      <div class="vision-side">
+        <div class="tag">— Notre conviction</div>
         <p>
-          Pendant que la finance traditionnelle s'enlise dans ses délais et ses frontières,
-          une nouvelle génération <strong>détient une richesse on-chain</strong> qu'elle ne sait
-          pas toujours comment ancrer dans le tangible.
+          Depuis dix ans, l'écosystème crypto a profondément évolué. La <strong>finance
+          décentralisée (DeFi)</strong> et les <strong>systèmes de paiement on-chain</strong> ont
+          atteint une maturité qui rend possibles des transactions instantanées,
+          sécurisées et transfrontalières.
         </p>
         <p>
-          BlockEstate conçoit des projets immobiliers d'exception dans des destinations choisies,
-          et permet à ses clients de les acquérir <strong>directement en BTC, USDC ou USDT</strong>.
-          Sans intermédiaires bancaires, sans semaines d'attente, sans friction de change.
+          Pourtant, acquérir un <strong>actif réel</strong> — et plus particulièrement un bien
+          immobilier — directement en crypto reste un parcours du combattant. Frictions
+          légales, contraintes réglementaires, méconnaissance des notaires et des
+          promoteurs : les barrières sont encore nombreuses.
         </p>
         <p>
-          Notre métier : sélectionner les terrains, piloter les chantiers, garantir la qualité.
-          Notre singularité : intégrer la blockchain à chaque étape — du paiement à la conciergerie.
+          Notre métier chez BlockEstate est de <strong>faire tomber ces barrières</strong>. Nous
+          offrons à nos clients une solution clé en main et un accompagnement complet
+          dans l'acquisition de leur villa — qu'ils règlent <strong>en crypto ou en fiat</strong>.
         </p>
       </div>
     </div>
@@ -829,88 +1169,128 @@
 
   <section class="project" id="projets">
     <div class="project-intro">
-      <div class="vision-label">— Premier projet en cours</div>
-      <h2>Une île. Des villas<br><em>d'exception</em>.</h2>
+      <div class="vision-label">— Nos opérations</div>
+      <h2>Trois îles. Une seule <em>signature</em>.</h2>
     </div>
 
-    <article class="project-card">
-      <div class="project-inner">
-        <div class="project-visual">
-          <span class="project-tag">Livraisons 2026 — 2027</span>
-          <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
-            <!-- Sun / moon -->
-            <circle cx="320" cy="80" r="30" fill="#d4ff3a" opacity="0.4"/>
-            <circle cx="320" cy="80" r="20" fill="#d4ff3a" opacity="0.7"/>
-            <!-- Ocean horizon -->
-            <line x1="0" y1="180" x2="400" y2="180" stroke="#d4ff3a" stroke-width="0.5" opacity="0.4" stroke-dasharray="2,4"/>
-            <!-- Distant island -->
-            <path d="M 50 180 Q 100 165 150 175 T 220 178 L 220 180 L 50 180 Z" fill="#d4ff3a" opacity="0.15"/>
-            <!-- Palm tree silhouette left -->
-            <line x1="60" y1="180" x2="58" y2="260" stroke="#d4ff3a" stroke-width="1.5" opacity="0.6"/>
-            <path d="M 58 180 Q 35 175 30 165" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <path d="M 58 180 Q 80 173 88 165" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <path d="M 58 180 Q 45 168 38 158" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <path d="M 58 180 Q 72 168 80 158" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <!-- Villa silhouette - modern, flat roof -->
+    <div class="projects-grid">
+
+      <!-- LATITUDE SAMUI — Active -->
+      <article class="project-tile active">
+        <div class="tile-visual">
+          <span class="tile-status">En développement · 2026</span>
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+            <circle cx="320" cy="70" r="26" fill="#d4ff3a" opacity="0.4"/>
+            <circle cx="320" cy="70" r="16" fill="#d4ff3a" opacity="0.7"/>
+            <line x1="0" y1="170" x2="400" y2="170" stroke="#d4ff3a" stroke-width="0.5" opacity="0.4" stroke-dasharray="2,4"/>
+            <path d="M 50 170 Q 100 158 150 168 T 220 170 L 220 170 L 50 170 Z" fill="#d4ff3a" opacity="0.15"/>
+            <line x1="60" y1="170" x2="58" y2="245" stroke="#d4ff3a" stroke-width="1.5" opacity="0.6"/>
+            <path d="M 58 170 Q 35 165 30 155" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 58 170 Q 80 163 88 155" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 58 170 Q 45 158 38 148" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 58 170 Q 72 158 80 148" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
             <g opacity="0.85">
-              <rect x="140" y="200" width="180" height="60" fill="none" stroke="#d4ff3a" stroke-width="1.2"/>
-              <line x1="140" y1="200" x2="320" y2="200" stroke="#d4ff3a" stroke-width="1.5"/>
-              <!-- Roof overhang -->
-              <line x1="130" y1="200" x2="330" y2="200" stroke="#d4ff3a" stroke-width="1.5"/>
-              <!-- Pillars -->
-              <line x1="170" y1="200" x2="170" y2="260" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
-              <line x1="210" y1="200" x2="210" y2="260" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
-              <line x1="250" y1="200" x2="250" y2="260" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
-              <line x1="290" y1="200" x2="290" y2="260" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
-              <!-- Interior glow -->
-              <rect x="175" y="215" width="30" height="40" fill="#d4ff3a" opacity="0.15"/>
-              <rect x="215" y="215" width="30" height="40" fill="#d4ff3a" opacity="0.25"/>
-              <rect x="255" y="215" width="30" height="40" fill="#d4ff3a" opacity="0.15"/>
+              <rect x="140" y="190" width="180" height="55" fill="none" stroke="#d4ff3a" stroke-width="1.2"/>
+              <line x1="140" y1="190" x2="320" y2="190" stroke="#d4ff3a" stroke-width="1.5"/>
+              <line x1="130" y1="190" x2="330" y2="190" stroke="#d4ff3a" stroke-width="1.5"/>
+              <line x1="170" y1="190" x2="170" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <line x1="210" y1="190" x2="210" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <line x1="250" y1="190" x2="250" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <line x1="290" y1="190" x2="290" y2="245" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <rect x="175" y="205" width="30" height="35" fill="#d4ff3a" opacity="0.15"/>
+              <rect x="215" y="205" width="30" height="35" fill="#d4ff3a" opacity="0.25"/>
+              <rect x="255" y="205" width="30" height="35" fill="#d4ff3a" opacity="0.15"/>
             </g>
-            <!-- Pool (reflection) -->
-            <ellipse cx="230" cy="280" rx="120" ry="6" fill="#d4ff3a" opacity="0.2"/>
-            <line x1="120" y1="280" x2="340" y2="280" stroke="#d4ff3a" stroke-width="0.4" opacity="0.5"/>
-            <!-- Palm right -->
-            <line x1="360" y1="200" x2="362" y2="270" stroke="#d4ff3a" stroke-width="1.5" opacity="0.6"/>
-            <path d="M 362 200 Q 385 195 392 185" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <path d="M 362 200 Q 340 193 332 185" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <path d="M 362 200 Q 378 188 386 178" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
-            <!-- Ground line -->
-            <line x1="0" y1="300" x2="400" y2="300" stroke="#d4ff3a" stroke-width="0.6" opacity="0.4"/>
+            <ellipse cx="230" cy="265" rx="120" ry="6" fill="#d4ff3a" opacity="0.2"/>
+            <line x1="360" y1="190" x2="362" y2="255" stroke="#d4ff3a" stroke-width="1.5" opacity="0.6"/>
+            <path d="M 362 190 Q 385 185 392 175" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 362 190 Q 340 183 332 175" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <line x1="0" y1="285" x2="400" y2="285" stroke="#d4ff3a" stroke-width="0.6" opacity="0.4"/>
           </svg>
         </div>
-        <div class="project-content">
-          <div>
-            <div class="project-loc">Koh Samui · Thaïlande</div>
-            <h3 class="project-name">Latitude <em>Samui</em></h3>
-            <p class="project-desc">
-              Quatre villas d'exception sur la côte sud de Koh Samui. Vues mer,
-              architecture contemporaine, matériaux nobles. Construction directe,
-              sans intermédiaire. Règlement accepté en crypto-actifs.
-            </p>
-          </div>
-
-          <div>
-            <div class="project-specs">
-              <div class="spec">
-                <div class="spec-label">Villas</div>
-                <div class="spec-value"><em>4</em></div>
-              </div>
-              <div class="spec">
-                <div class="spec-label">Surface</div>
-                <div class="spec-value">146–252 <em>m²</em></div>
-              </div>
-              <div class="spec">
-                <div class="spec-label">À partir de</div>
-                <div class="spec-value"><em>฿</em> 19M</div>
-              </div>
-            </div>
-
-            <a href="https://lzn-hash.github.io/maisons-samui/" target="_blank" rel="noopener" class="btn-primary">Visiter Latitude Samui →</a>
-          </div>
+        <div class="tile-body">
+          <div class="tile-loc">Koh Samui · Thaïlande</div>
+          <div class="tile-name">Latitude <em>Samui</em></div>
+          <p class="tile-desc">
+            Villas d'exception sur la côte sud de Koh Samui. Vues mer, architecture
+            contemporaine, matériaux nobles. Construction pilotée sur place par notre
+            équipe locale.
+          </p>
+          <a href="https://lzn-hash.github.io/maisons-samui/" target="_blank" rel="noopener" class="tile-action">Visiter le projet →</a>
         </div>
-      </div>
-    </article>
+      </article>
+
+      <!-- LATITUDE SIQUIJOR — Coming soon -->
+      <article class="project-tile soon">
+        <div class="tile-visual">
+          <span class="tile-status">Bientôt</span>
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+            <circle cx="80" cy="80" r="22" fill="#d4ff3a" opacity="0.3"/>
+            <circle cx="80" cy="80" r="12" fill="#d4ff3a" opacity="0.5"/>
+            <line x1="0" y1="180" x2="400" y2="180" stroke="#d4ff3a" stroke-width="0.5" opacity="0.3" stroke-dasharray="2,4"/>
+            <path d="M 30 180 Q 90 168 160 175 T 280 180 L 280 180 L 30 180 Z" fill="#d4ff3a" opacity="0.12"/>
+            <g opacity="0.7">
+              <polygon points="120,200 180,150 240,200" fill="none" stroke="#d4ff3a" stroke-width="1"/>
+              <polygon points="180,200 240,140 300,200" fill="none" stroke="#d4ff3a" stroke-width="1"/>
+              <line x1="120" y1="200" x2="300" y2="200" stroke="#d4ff3a" stroke-width="1.5"/>
+            </g>
+            <line x1="320" y1="180" x2="322" y2="240" stroke="#d4ff3a" stroke-width="1.2" opacity="0.5"/>
+            <path d="M 322 180 Q 345 175 352 165" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.4"/>
+            <path d="M 322 180 Q 300 173 292 165" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.4"/>
+            <path d="M 322 180 Q 338 168 346 158" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.4"/>
+            <line x1="50" y1="180" x2="52" y2="240" stroke="#d4ff3a" stroke-width="1.2" opacity="0.5"/>
+            <path d="M 52 180 Q 75 175 82 165" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.4"/>
+            <path d="M 52 180 Q 30 173 22 165" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.4"/>
+            <line x1="0" y1="270" x2="400" y2="270" stroke="#d4ff3a" stroke-width="0.6" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <div class="tile-loc">Siquijor · Philippines</div>
+          <div class="tile-name">Latitude <em>Siquijor</em></div>
+          <p class="tile-desc">
+            Notre prochaine destination, sur une île préservée des Visayas. Phase
+            d'études et de prospection foncière en cours.
+          </p>
+          <span class="tile-action">À venir</span>
+        </div>
+      </article>
+
+      <!-- LATITUDE BALI — Coming soon -->
+      <article class="project-tile soon">
+        <div class="tile-visual">
+          <span class="tile-status">Bientôt</span>
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+            <circle cx="200" cy="75" r="28" fill="#d4ff3a" opacity="0.3"/>
+            <circle cx="200" cy="75" r="16" fill="#d4ff3a" opacity="0.5"/>
+            <line x1="0" y1="170" x2="400" y2="170" stroke="#d4ff3a" stroke-width="0.5" opacity="0.3" stroke-dasharray="2,4"/>
+            <g opacity="0.7">
+              <polygon points="80,210 130,140 180,210" fill="none" stroke="#d4ff3a" stroke-width="1"/>
+              <polygon points="140,210 200,120 260,210" fill="none" stroke="#d4ff3a" stroke-width="1"/>
+              <polygon points="220,210 270,150 320,210" fill="none" stroke="#d4ff3a" stroke-width="1"/>
+            </g>
+            <g opacity="0.6">
+              <rect x="60" y="220" width="280" height="30" fill="none" stroke="#d4ff3a" stroke-width="1"/>
+              <line x1="100" y1="220" x2="100" y2="250" stroke="#d4ff3a" stroke-width="0.5"/>
+              <line x1="150" y1="220" x2="150" y2="250" stroke="#d4ff3a" stroke-width="0.5"/>
+              <line x1="200" y1="220" x2="200" y2="250" stroke="#d4ff3a" stroke-width="0.5"/>
+              <line x1="250" y1="220" x2="250" y2="250" stroke="#d4ff3a" stroke-width="0.5"/>
+              <line x1="300" y1="220" x2="300" y2="250" stroke="#d4ff3a" stroke-width="0.5"/>
+            </g>
+            <line x1="0" y1="270" x2="400" y2="270" stroke="#d4ff3a" stroke-width="0.6" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <div class="tile-loc">Bali · Indonésie</div>
+          <div class="tile-name">Latitude <em>Bali</em></div>
+          <p class="tile-desc">
+            Une opération haut de gamme dans la région d'Ubud ou de Canggu, à
+            l'horizon 2027–2028. Étude de marché en préparation.
+          </p>
+          <span class="tile-action">À venir</span>
+        </div>
+      </article>
+
+    </div>
   </section>
 
   <!-- CRYPTO BAND -->
@@ -935,48 +1315,58 @@
   <div class="section-num">— <span>IV</span> — ÉQUIPE</div>
 
   <section class="about" id="equipe">
-    <div class="about-grid">
-      <div>
-        <div class="about-label">— Les fondateurs</div>
-        <h3 class="about-quote">« La crypto n'a de sens que si elle <em>permet</em>. Permettre d'acquérir, de bâtir, d'habiter. »</h3>
-        <div class="about-signature">
-          <strong>BlockEstate</strong><br>
-          Fondée à Dubaï, opérations à Koh Samui
-        </div>
-      </div>
-      <div class="about-text">
-        <p>
-          Nous sommes deux fondateurs venus du Web3 et de l'immobilier. Nous avons
-          observé pendant des années une frustration partagée : les détenteurs de
-          crypto-actifs cherchent à s'ancrer dans le réel, et les promoteurs
-          immobiliers cherchent une nouvelle clientèle internationale.
-        </p>
-        <p>
-          BlockEstate est notre réponse. Une structure légère, à Dubaï, qui sélectionne
-          des projets de qualité, les construit avec des équipes locales triées sur
-          le volet, et permet à ses clients de les régler comme ils le souhaitent —
-          en crypto ou en fiat.
-        </p>
-        <p>
-          Pas de jeton à acheter. Pas de promesse de rendement abstraite. Juste des
-          villas, posées sur la terre, et un règlement qui passe par les rails que
-          vous préférez.
-        </p>
-      </div>
+    <div class="team-intro">
+      <div class="label">— Les fondateurs</div>
+      <h2>Trois parcours.<br>Une <em>même conviction</em>.</h2>
+      <p>
+        BlockEstate est une <strong>jeune société</strong>. Nous y croyons précisément
+        parce que nous l'avons fondée à trois, avec des compétences complémentaires
+        et une expérience terrain qui parle d'elle-même. Pas de jeton à acheter, pas
+        de promesse abstraite — juste trois entrepreneurs et des projets concrets.
+      </p>
     </div>
-  </section>
 
-  <!-- CTA -->
-  <section class="cta" id="contact">
-    <div class="cta-label">— Premier échange</div>
-    <h2>Parlons de votre<br><em>projet</em>.</h2>
-    <p class="cta-sub">
-      Un email, un appel. Nous répondons personnellement sous 24h.
-      En français, en anglais, ou en crypto si vous préférez.
-    </p>
-    <div class="cta-actions">
-      <a href="mailto:contact@blockestate.com" class="btn-primary">contact@blockestate.com</a>
-      <a href="https://lzn-hash.github.io/maisons-samui/" target="_blank" rel="noopener" class="btn-ghost">Voir Latitude Samui →</a>
+    <div class="team-grid">
+
+      <article class="team-card">
+        <div class="avatar">S</div>
+        <div class="role">Direction · Stratégie</div>
+        <h3 class="name"><em>Sébastien</em></h3>
+        <p class="bio">
+          Ancien dirigeant du <strong>groupe CBO à Agen</strong>, opérant plus de dix marques
+          moto (Kawasaki, Honda, Yamaha, Can-Am…). Sébastien s'est installé à Koh Samui
+          en 2025 avec sa femme et ses deux filles pour changer de vie. Entrepreneur
+          aguerri, il pilote la direction et la stratégie de BlockEstate.
+        </p>
+        <div class="meta">Basé à <b>Koh Samui</b></div>
+      </article>
+
+      <article class="team-card">
+        <div class="avatar">L</div>
+        <div class="role">Construction · Terrain</div>
+        <h3 class="name"><em>Laurent</em></h3>
+        <p class="bio">
+          Ancien <strong>patron d'une entreprise de maçonnerie en France</strong>, installé
+          à Koh Samui avec sa famille depuis plus de dix ans. Laurent a déjà construit
+          plus de <strong>dix villas haut de gamme</strong> sur l'île, en pilotant
+          personnellement chaque chantier. C'est lui qui garantit la qualité du bâti.
+        </p>
+        <div class="meta">Basé à <b>Koh Samui</b></div>
+      </article>
+
+      <article class="team-card">
+        <div class="avatar">B</div>
+        <div class="role">Tech · Crypto</div>
+        <h3 class="name"><em>Benoît</em></h3>
+        <p class="bio">
+          Double formation en <strong>finance d'entreprise</strong> et en
+          <strong>informatique</strong>. Plus de dix ans dans un grand groupe d'assurance
+          international avant de prendre son indépendance avec l'essor du Web3. La
+          caution « geek » de l'équipe sur les volets technologie et crypto.
+        </p>
+        <div class="meta">Tech & <b>on-chain</b></div>
+      </article>
+
     </div>
   </section>
 
@@ -1174,6 +1564,24 @@
     resize();
     window.addEventListener('resize', resize);
     requestAnimationFrame(tick);
+  })();
+
+  // Side-nav active state on scroll (V5 dot navigation)
+  (function() {
+    const links = document.querySelectorAll('.side-nav a');
+    const stages = ['hero', 'vision', 'approche', 'projets', 'equipe'];
+    function update() {
+      const scroll = window.scrollY + window.innerHeight * 0.35;
+      let activeIdx = 0;
+      stages.forEach((id, idx) => {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= scroll) activeIdx = idx;
+      });
+      links.forEach((l, idx) => l.classList.toggle('active', idx === activeIdx));
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
   })();
 </script>
 
