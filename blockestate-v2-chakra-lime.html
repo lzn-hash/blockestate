@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlockEstate — V2 Chakra / Lime</title>
+<meta name="description" content="BlockEstate allie immobilier d'exception et paiement en crypto-actifs. Acquérez des villas de luxe en BTC, USDC ou USDT.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050507;
+    --bg-2: #0c0c12;
+    --bg-3: #14141c;
+    --ink: #f4f1ea;
+    --ink-soft: #a8a5a0;
+    --ink-faint: #5a5760;
+    --accent: #d4ff3a;
+    --accent-soft: #8aa322;
+    --rule: rgba(244, 241, 234, 0.08);
+    --rule-strong: rgba(244, 241, 234, 0.18);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; font-weight: 300; letter-spacing: 0.08em; }
+
+  /* ── SPACE BACKGROUND — V1: Meteor Shower ── */
+  .space-bg {
+    position: fixed; inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .nebula {
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 30%, rgba(212, 255, 58, 0.08), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 70%, rgba(70, 100, 160, 0.10), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(120, 60, 140, 0.05), transparent 65%);
+    animation: nebula-drift 60s ease-in-out infinite alternate;
+    filter: blur(40px);
+  }
+  @keyframes nebula-drift {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(-3%, 2%) scale(1.05); }
+    100% { transform: translate(2%, -2%) scale(1); }
+  }
+  #starfield {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.95;
+  }
+  #meteors {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nebula { animation: none; }
+  }
+
+    main, nav, footer { position: relative; z-index: 2; }
+
+  /* ── NAV ── */
+  nav {
+    padding: 28px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--rule);
+  }
+  .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    font-weight: 400;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-mark {
+    width: 24px; height: 24px;
+    border: 1px solid var(--accent);
+    position: relative;
+    transform: rotate(45deg);
+  }
+  .logo-mark::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+  nav ul {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  nav a:hover { color: var(--accent); }
+  .nav-contact {
+    color: var(--accent) !important;
+    border: 1px solid var(--accent);
+    padding: 10px 20px;
+    transition: all 0.3s;
+  }
+  .nav-contact:hover { background: var(--accent); color: var(--bg) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 160px 48px 140px;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .hero-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .hero-meta::before {
+    content: '';
+    display: inline-block;
+    width: 48px; height: 1px;
+    background: var(--accent);
+  }
+  h1.hero-title {
+    font-size: clamp(56px, 9vw, 144px);
+    line-height: 0.92;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    margin-bottom: 48px;
+    max-width: 1100px;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .hero-sub {
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 580px;
+    margin-bottom: 56px;
+    font-weight: 300;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    padding: 18px 36px;
+    border: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover {
+    background: var(--ink);
+    transform: translateY(-2px);
+  }
+  .btn-ghost {
+    color: var(--ink);
+    background: none;
+    border: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-bottom: 1px solid var(--rule-strong);
+    padding-bottom: 6px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .btn-ghost:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* Floating crypto badges in hero */
+  .hero-crypto-strip {
+    position: absolute;
+    bottom: 60px; right: 48px;
+    display: flex;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    align-items: center;
+  }
+  .hero-crypto-strip span:not(:last-child)::after {
+    content: '·';
+    margin-left: 16px;
+    color: var(--accent-soft);
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--accent);
+    text-align: center;
+    padding: 24px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-num span {
+    margin: 0 8px;
+    color: var(--ink-faint);
+  }
+
+  /* ── SECTION : VISION ── */
+  .vision {
+    padding: 140px 48px;
+  }
+  .vision-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 100px;
+    align-items: start;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .vision-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .vision-tagline {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    font-style: italic;
+    font-weight: 300;
+  }
+  h2 {
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1.05;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+  h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .vision-text p {
+    font-size: 19px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    font-weight: 300;
+    max-width: 680px;
+  }
+  .vision-text p strong {
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* ── SECTION : PILLARS ── */
+  .pillars {
+    padding: 120px 48px;
+    border-top: 1px solid var(--rule);
+  }
+  .pillars-head {
+    max-width: 900px;
+    margin: 0 auto 80px;
+    text-align: center;
+  }
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  .pillar {
+    background: var(--bg);
+    padding: 56px 40px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background 0.4s;
+  }
+  .pillar:hover { background: var(--bg-2); }
+  .pillar-icon {
+    width: 48px; height: 48px;
+    border: 1px solid var(--accent);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    letter-spacing: 0;
+  }
+  .pillar h3 {
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .pillar h3 em { color: var(--accent); font-style: italic; }
+  .pillar p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+
+  /* ── SECTION : PROJECT (Latitude Samui) ── */
+  .project {
+    padding: 140px 48px;
+    border-top: 1px solid var(--rule);
+    position: relative;
+  }
+  .project-intro {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 80px;
+  }
+  .project-card {
+    max-width: 1300px;
+    margin: 0 auto;
+    border: 1px solid var(--rule-strong);
+    background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
+    overflow: hidden;
+    position: relative;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .project-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 520px;
+  }
+  .project-visual {
+    position: relative;
+    background:
+      radial-gradient(circle at 30% 70%, rgba(212, 255, 58, 0.15), transparent 50%),
+      linear-gradient(180deg, var(--bg-3), var(--bg));
+    overflow: hidden;
+  }
+  .project-visual svg {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 80%;
+  }
+  .project-tag {
+    position: absolute;
+    top: 32px; left: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    z-index: 2;
+  }
+  .project-tag::before {
+    content: '● ';
+    margin-right: 4px;
+  }
+  .project-content {
+    padding: 56px 56px 56px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-left: 1px solid var(--rule);
+  }
+  .project-loc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .project-name {
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .project-name em { color: var(--accent); font-style: italic; }
+  .project-desc {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    max-width: 480px;
+    font-weight: 300;
+  }
+  .project-specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 24px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 32px;
+  }
+  .spec .spec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .spec .spec-value {
+    font-size: 22px;
+    font-weight: 300;
+  }
+  .spec .spec-value em { color: var(--accent); font-style: italic; }
+
+  /* ── SECTION : CRYPTO ACCEPTED ── */
+  .crypto-band {
+    padding: 80px 48px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg-2);
+    overflow: hidden;
+    position: relative;
+  }
+  .crypto-band::before, .crypto-band::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 120px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .crypto-band::before { left: 0; background: linear-gradient(to right, var(--bg-2), transparent); }
+  .crypto-band::after { right: 0; background: linear-gradient(to left, var(--bg-2), transparent); }
+  .crypto-track {
+    display: flex;
+    gap: 80px;
+    white-space: nowrap;
+    animation: scroll-x 40s linear infinite;
+    align-items: center;
+  }
+  .crypto-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .crypto-symbol {
+    width: 40px; height: 40px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Chakra Petch', sans-serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  @keyframes scroll-x {
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION : ABOUT / FOUNDERS ── */
+  .about {
+    padding: 140px 48px;
+  }
+  .about-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .about-quote {
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+  }
+  .about-quote em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .about-text p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+  .about-signature {
+    margin-top: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+  }
+  .about-signature strong {
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* ── CONTACT / CTA ── */
+  .cta {
+    padding: 160px 48px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    position: relative;
+  }
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(212, 255, 58, 0.06), transparent 65%);
+    pointer-events: none;
+  }
+  .cta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .cta h2 {
+    font-size: clamp(48px, 7vw, 96px);
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .cta-sub {
+    font-size: 19px;
+    color: var(--ink-soft);
+    max-width: 520px;
+    margin: 0 auto 56px;
+    line-height: 1.6;
+    font-weight: 300;
+    position: relative;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 56px 48px 32px;
+  }
+  .footer-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 56px;
+  }
+  .footer-brand .logo { margin-bottom: 20px; }
+  .footer-brand p {
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 320px;
+    font-weight: 300;
+  }
+  footer h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+  footer ul { list-style: none; }
+  footer li { margin-bottom: 10px; }
+  footer a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+  }
+  footer a:hover { color: var(--accent); }
+  .footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    nav ul li:not(:last-child) { display: none; }
+    .hero { padding: 100px 24px 80px; }
+    .hero-crypto-strip { position: static; margin-top: 48px; flex-wrap: wrap; }
+    .vision { padding: 80px 24px; }
+    .vision-grid { grid-template-columns: 1fr; gap: 40px; }
+    .pillars { padding: 80px 24px; }
+    .pillars-grid { grid-template-columns: 1fr; }
+    .project { padding: 80px 24px; }
+    .project-inner { grid-template-columns: 1fr; }
+    .project-visual { min-height: 280px; }
+    .project-content { padding: 40px 24px; border-left: none; border-top: 1px solid var(--rule); }
+    .project-specs { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .crypto-band { padding: 48px 0; }
+    .about { padding: 80px 24px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .cta { padding: 100px 24px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; padding: 0 24px; }
+    footer { padding: 40px 0 24px; }
+    .footer-bottom { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="space-bg">
+  <div class="nebula"></div>
+  <canvas id="starfield"></canvas>
+  <canvas id="meteors"></canvas>
+</div>
+
+<nav>
+  <div class="logo">
+    <div class="logo-mark"></div>
+    BlockEstate
+  </div>
+  <ul>
+    <li><a href="#vision">Vision</a></li>
+    <li><a href="#approche">Approche</a></li>
+    <li><a href="#projets">Projets</a></li>
+    <li><a href="#equipe">Équipe</a></li>
+    <li><a href="#contact" class="nav-contact">Nous écrire</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-meta">EST. 2024 · DUBAI / KOH SAMUI</div>
+    <h1 class="hero-title">
+      Where real estate<br>meets <em>blockchain</em>.
+    </h1>
+    <p class="hero-sub">
+      BlockEstate accompagne acquéreurs et investisseurs sur des résidences
+      d'exception, réglées en crypto-actifs. L'immobilier ancré, la rapidité on-chain.
+    </p>
+    <div class="hero-actions">
+      <a href="#projets" class="btn-primary">Découvrir nos projets</a>
+      <a href="#vision" class="btn-ghost">Notre approche →</a>
+    </div>
+    <div class="hero-crypto-strip">
+      <span>BTC</span><span>USDC</span><span>USDT</span><span>Règlement sécurisé</span>
+    </div>
+  </section>
+
+  <!-- I -->
+  <div class="section-num">— <span>I</span> — VISION</div>
+
+  <section class="vision" id="vision">
+    <div class="vision-grid">
+      <div>
+        <div class="vision-label">— Notre conviction</div>
+        <p class="vision-tagline">L'immobilier physique reste la valeur refuge. La crypto en a redéfini les flux.</p>
+      </div>
+      <div class="vision-text">
+        <h2>Construire le <em>pont</em><br>entre deux mondes.</h2>
+        <p>
+          Pendant que la finance traditionnelle s'enlise dans ses délais et ses frontières,
+          une nouvelle génération <strong>détient une richesse on-chain</strong> qu'elle ne sait
+          pas toujours comment ancrer dans le tangible.
+        </p>
+        <p>
+          BlockEstate conçoit des projets immobiliers d'exception dans des destinations choisies,
+          et permet à ses clients de les acquérir <strong>directement en BTC, USDC ou USDT</strong>.
+          Sans intermédiaires bancaires, sans semaines d'attente, sans friction de change.
+        </p>
+        <p>
+          Notre métier : sélectionner les terrains, piloter les chantiers, garantir la qualité.
+          Notre singularité : intégrer la blockchain à chaque étape — du paiement à la conciergerie.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- II -->
+  <div class="section-num">— <span>II</span> — APPROCHE</div>
+
+  <section class="pillars" id="approche">
+    <div class="pillars-head">
+      <div class="vision-label" style="text-align: center;">— Trois engagements</div>
+      <h2>Une promesse<br><em>tenue</em> de bout en bout.</h2>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div>
+          <div class="pillar-icon">◆</div>
+          <h3>Bâti <em>réel</em></h3>
+          <p>
+            Pas de tokens flottants, pas de promesses abstraites. Chacun de nos projets
+            est un terrain acquis, un permis déposé, un chantier suivi. La blockchain
+            sert le réel — elle ne le remplace pas.
+          </p>
+        </div>
+      </div>
+      <div class="pillar">
+        <div>
+          <div class="pillar-icon">⬡</div>
+          <h3>Paiement <em>fluide</em></h3>
+          <p>
+            BTC, USDC, USDT. Transaction sécurisée par notre partenaire de paiement
+            crypto licencié, conversion instantanée, séquestre notarial.
+            Vous payez en crypto, le vendeur reçoit en fiat, sans risque de volatilité.
+          </p>
+        </div>
+      </div>
+      <div class="pillar">
+        <div>
+          <div class="pillar-icon">◇</div>
+          <h3>Présence <em>directe</em></h3>
+          <p>
+            Nous sommes sur place. Visites de chantier, choix des finitions, remise des clés —
+            tout passe par notre équipe sur le terrain. La crypto rend les flux instantanés ;
+            la relation, elle, reste humaine.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- III -->
+  <div class="section-num">— <span>III</span> — PROJETS</div>
+
+  <section class="project" id="projets">
+    <div class="project-intro">
+      <div class="vision-label">— Premier projet en cours</div>
+      <h2>Une île. Des villas<br><em>d'exception</em>.</h2>
+    </div>
+
+    <article class="project-card">
+      <div class="project-inner">
+        <div class="project-visual">
+          <span class="project-tag">Livraisons 2026 — 2027</span>
+          <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+            <!-- Sun / moon -->
+            <circle cx="320" cy="80" r="30" fill="#d4ff3a" opacity="0.4"/>
+            <circle cx="320" cy="80" r="20" fill="#d4ff3a" opacity="0.7"/>
+            <!-- Ocean horizon -->
+            <line x1="0" y1="180" x2="400" y2="180" stroke="#d4ff3a" stroke-width="0.5" opacity="0.4" stroke-dasharray="2,4"/>
+            <!-- Distant island -->
+            <path d="M 50 180 Q 100 165 150 175 T 220 178 L 220 180 L 50 180 Z" fill="#d4ff3a" opacity="0.15"/>
+            <!-- Palm tree silhouette left -->
+            <line x1="60" y1="180" x2="58" y2="260" stroke="#d4ff3a" stroke-width="1.5" opacity="0.6"/>
+            <path d="M 58 180 Q 35 175 30 165" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 58 180 Q 80 173 88 165" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 58 180 Q 45 168 38 158" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 58 180 Q 72 168 80 158" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <!-- Villa silhouette - modern, flat roof -->
+            <g opacity="0.85">
+              <rect x="140" y="200" width="180" height="60" fill="none" stroke="#d4ff3a" stroke-width="1.2"/>
+              <line x1="140" y1="200" x2="320" y2="200" stroke="#d4ff3a" stroke-width="1.5"/>
+              <!-- Roof overhang -->
+              <line x1="130" y1="200" x2="330" y2="200" stroke="#d4ff3a" stroke-width="1.5"/>
+              <!-- Pillars -->
+              <line x1="170" y1="200" x2="170" y2="260" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <line x1="210" y1="200" x2="210" y2="260" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <line x1="250" y1="200" x2="250" y2="260" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <line x1="290" y1="200" x2="290" y2="260" stroke="#d4ff3a" stroke-width="0.8" opacity="0.5"/>
+              <!-- Interior glow -->
+              <rect x="175" y="215" width="30" height="40" fill="#d4ff3a" opacity="0.15"/>
+              <rect x="215" y="215" width="30" height="40" fill="#d4ff3a" opacity="0.25"/>
+              <rect x="255" y="215" width="30" height="40" fill="#d4ff3a" opacity="0.15"/>
+            </g>
+            <!-- Pool (reflection) -->
+            <ellipse cx="230" cy="280" rx="120" ry="6" fill="#d4ff3a" opacity="0.2"/>
+            <line x1="120" y1="280" x2="340" y2="280" stroke="#d4ff3a" stroke-width="0.4" opacity="0.5"/>
+            <!-- Palm right -->
+            <line x1="360" y1="200" x2="362" y2="270" stroke="#d4ff3a" stroke-width="1.5" opacity="0.6"/>
+            <path d="M 362 200 Q 385 195 392 185" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 362 200 Q 340 193 332 185" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 362 200 Q 378 188 386 178" stroke="#d4ff3a" stroke-width="1" fill="none" opacity="0.5"/>
+            <!-- Ground line -->
+            <line x1="0" y1="300" x2="400" y2="300" stroke="#d4ff3a" stroke-width="0.6" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="project-content">
+          <div>
+            <div class="project-loc">Koh Samui · Thaïlande</div>
+            <h3 class="project-name">Latitude <em>Samui</em></h3>
+            <p class="project-desc">
+              Quatre villas d'exception sur la côte sud de Koh Samui. Vues mer,
+              architecture contemporaine, matériaux nobles. Construction directe,
+              sans intermédiaire. Règlement accepté en crypto-actifs.
+            </p>
+          </div>
+
+          <div>
+            <div class="project-specs">
+              <div class="spec">
+                <div class="spec-label">Villas</div>
+                <div class="spec-value"><em>4</em></div>
+              </div>
+              <div class="spec">
+                <div class="spec-label">Surface</div>
+                <div class="spec-value">146–252 <em>m²</em></div>
+              </div>
+              <div class="spec">
+                <div class="spec-label">À partir de</div>
+                <div class="spec-value"><em>฿</em> 19M</div>
+              </div>
+            </div>
+
+            <a href="https://lzn-hash.github.io/maisons-samui/" target="_blank" rel="noopener" class="btn-primary">Visiter Latitude Samui →</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- CRYPTO BAND -->
+  <div class="crypto-band">
+    <div class="crypto-track">
+      <div class="crypto-item"><div class="crypto-symbol">₿</div>Bitcoin</div>
+      <div class="crypto-item"><div class="crypto-symbol">$</div>USDC</div>
+      <div class="crypto-item"><div class="crypto-symbol">₮</div>Tether USDT</div>
+      <div class="crypto-item">→ Conversion instantanée</div>
+      <div class="crypto-item">→ Séquestre sécurisé</div>
+      <div class="crypto-item">→ Settlement notarié</div>
+      <div class="crypto-item"><div class="crypto-symbol">₿</div>Bitcoin</div>
+      <div class="crypto-item"><div class="crypto-symbol">$</div>USDC</div>
+      <div class="crypto-item"><div class="crypto-symbol">₮</div>Tether USDT</div>
+      <div class="crypto-item">→ Conversion instantanée</div>
+      <div class="crypto-item">→ Séquestre sécurisé</div>
+      <div class="crypto-item">→ Settlement notarié</div>
+    </div>
+  </div>
+
+  <!-- IV -->
+  <div class="section-num">— <span>IV</span> — ÉQUIPE</div>
+
+  <section class="about" id="equipe">
+    <div class="about-grid">
+      <div>
+        <div class="about-label">— Les fondateurs</div>
+        <h3 class="about-quote">« La crypto n'a de sens que si elle <em>permet</em>. Permettre d'acquérir, de bâtir, d'habiter. »</h3>
+        <div class="about-signature">
+          <strong>BlockEstate</strong><br>
+          Fondée à Dubaï, opérations à Koh Samui
+        </div>
+      </div>
+      <div class="about-text">
+        <p>
+          Nous sommes deux fondateurs venus du Web3 et de l'immobilier. Nous avons
+          observé pendant des années une frustration partagée : les détenteurs de
+          crypto-actifs cherchent à s'ancrer dans le réel, et les promoteurs
+          immobiliers cherchent une nouvelle clientèle internationale.
+        </p>
+        <p>
+          BlockEstate est notre réponse. Une structure légère, à Dubaï, qui sélectionne
+          des projets de qualité, les construit avec des équipes locales triées sur
+          le volet, et permet à ses clients de les régler comme ils le souhaitent —
+          en crypto ou en fiat.
+        </p>
+        <p>
+          Pas de jeton à acheter. Pas de promesse de rendement abstraite. Juste des
+          villas, posées sur la terre, et un règlement qui passe par les rails que
+          vous préférez.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <div class="cta-label">— Premier échange</div>
+    <h2>Parlons de votre<br><em>projet</em>.</h2>
+    <p class="cta-sub">
+      Un email, un appel. Nous répondons personnellement sous 24h.
+      En français, en anglais, ou en crypto si vous préférez.
+    </p>
+    <div class="cta-actions">
+      <a href="mailto:contact@blockestate.com" class="btn-primary">contact@blockestate.com</a>
+      <a href="https://lzn-hash.github.io/maisons-samui/" target="_blank" rel="noopener" class="btn-ghost">Voir Latitude Samui →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        BlockEstate
+      </div>
+      <p>
+        Where real estate meets blockchain.<br>
+        Villas d'exception, réglées en crypto-actifs.<br>
+        Dubaï · Koh Samui.
+      </p>
+    </div>
+    <div>
+      <h4>Site</h4>
+      <ul>
+        <li><a href="#vision">Vision</a></li>
+        <li><a href="#approche">Approche</a></li>
+        <li><a href="#projets">Projets</a></li>
+        <li><a href="#equipe">Équipe</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Projets</h4>
+      <ul>
+        <li><a href="https://lzn-hash.github.io/maisons-samui/" target="_blank" rel="noopener">Latitude Samui</a></li>
+        <li><a href="#">Projets à venir</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:contact@blockestate.com">contact@blockestate.com</a></li>
+        <li><a href="#">Dubaï, UAE</a></li>
+        <li><a href="#">Koh Samui, TH</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 BlockEstate</span>
+    <span>BTC · USDC · USDT acceptés</span>
+    <span>Dubai / Koh Samui</span>
+  </div>
+</footer>
+
+
+<script>
+  // V1: Stars + frequent meteor shower
+  (function() {
+    const canvas = document.getElementById('starfield');
+    const meteorCanvas = document.getElementById('meteors');
+    if (!canvas || !meteorCanvas) return;
+    const ctx = canvas.getContext('2d');
+    const mctx = meteorCanvas.getContext('2d');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let w, h, stars, meteors, dpr;
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      [canvas, meteorCanvas].forEach(c => {
+        c.width = w * dpr;
+        c.height = h * dpr;
+      });
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      mctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      buildStars();
+    }
+
+    function buildStars() {
+      const count = Math.min(240, Math.floor((w * h) / 5500));
+      stars = [];
+      for (let i = 0; i < count; i++) {
+        const layer = Math.random();
+        let size, baseAlpha, drift, depth;
+        if (layer < 0.65) { depth = 0; size = Math.random() * 0.7 + 0.3; baseAlpha = 0.3 + Math.random() * 0.3; drift = 0.005; }
+        else if (layer < 0.92) { depth = 1; size = Math.random() * 1.0 + 0.5; baseAlpha = 0.45 + Math.random() * 0.3; drift = 0.012; }
+        else { depth = 2; size = Math.random() * 1.3 + 0.9; baseAlpha = 0.7 + Math.random() * 0.3; drift = 0.022; }
+        stars.push({
+          x: Math.random() * w, y: Math.random() * h, r: size,
+          baseAlpha, alpha: baseAlpha, drift, depth,
+          tw: 0.0008 + Math.random() * 0.002,
+          phase: Math.random() * Math.PI * 2,
+          gold: depth === 2 && Math.random() < 0.3
+        });
+      }
+      meteors = [];
+    }
+
+    function spawnMeteor() {
+      // Meteors come from top-right or top-left, angle down-across
+      const fromLeft = Math.random() < 0.5;
+      const angleDeg = fromLeft ? (15 + Math.random() * 20) : (160 + Math.random() * 20);
+      const angle = angleDeg * Math.PI / 180;
+      const startX = fromLeft ? -50 - Math.random() * 200 : w + 50 + Math.random() * 200;
+      const startY = Math.random() * h * 0.6;
+      const speed = 8 + Math.random() * 6;
+      const len = 80 + Math.random() * 120;
+      const life = 0;
+      const maxLife = 60 + Math.random() * 40;
+      const golden = Math.random() < 0.35;
+      meteors.push({
+        x: startX, y: startY,
+        vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+        len, life, maxLife, golden,
+        thickness: 0.8 + Math.random() * 1.2
+      });
+    }
+
+    let lastTime = performance.now();
+    let meteorTimer = 0;
+    function tick(now) {
+      const dt = Math.min(50, now - lastTime);
+      lastTime = now;
+
+      // Background stars
+      ctx.clearRect(0, 0, w, h);
+      for (const s of stars) {
+        if (!reduced) {
+          s.x += s.drift * (dt / 16);
+          if (s.x > w + 5) s.x = -5;
+          s.phase += s.tw * dt;
+          s.alpha = s.baseAlpha * (0.55 + 0.45 * Math.sin(s.phase));
+        }
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = s.gold
+          ? `rgba(212, 255, 58, ${s.alpha})`
+          : `rgba(255, 255, 255, ${s.alpha})`;
+        ctx.fill();
+        if (s.depth === 2 && s.r > 1.4) {
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = s.gold
+            ? `rgba(212, 255, 58, ${s.alpha * 0.15})`
+            : `rgba(255, 255, 255, ${s.alpha * 0.15})`;
+          ctx.fill();
+        }
+      }
+
+      // Meteors layer
+      mctx.clearRect(0, 0, w, h);
+      meteorTimer += dt;
+      // Spawn occasionally: every 4-5 sec on average
+      if (!reduced && meteorTimer > 3500 + Math.random() * 1500) {
+        spawnMeteor();
+        // Very rare: occasional pair (~12% of the time)
+        if (Math.random() < 0.12) {
+          setTimeout(spawnMeteor, 350);
+        }
+        meteorTimer = 0;
+      }
+
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i];
+        m.x += m.vx * (dt / 16);
+        m.y += m.vy * (dt / 16);
+        m.life += dt / 16;
+        const lifeRatio = m.life / m.maxLife;
+        const alpha = lifeRatio < 0.2 ? lifeRatio / 0.2 : (1 - (lifeRatio - 0.2) / 0.8);
+        if (alpha <= 0 || m.x < -300 || m.x > w + 300 || m.y > h + 100) {
+          meteors.splice(i, 1);
+          continue;
+        }
+        // Tail: line from current position back along -velocity
+        const tailX = m.x - m.vx * (m.len / Math.sqrt(m.vx * m.vx + m.vy * m.vy));
+        const tailY = m.y - m.vy * (m.len / Math.sqrt(m.vx * m.vx + m.vy * m.vy));
+        const grad = mctx.createLinearGradient(tailX, tailY, m.x, m.y);
+        const color = m.golden ? '212, 255, 58' : '255, 255, 255';
+        grad.addColorStop(0, `rgba(${color}, 0)`);
+        grad.addColorStop(0.5, `rgba(${color}, ${alpha * 0.3})`);
+        grad.addColorStop(1, `rgba(${color}, ${alpha * 0.9})`);
+        mctx.strokeStyle = grad;
+        mctx.lineWidth = m.thickness;
+        mctx.beginPath();
+        mctx.moveTo(tailX, tailY);
+        mctx.lineTo(m.x, m.y);
+        mctx.stroke();
+        // Bright head
+        mctx.beginPath();
+        mctx.arc(m.x, m.y, m.thickness * 1.2, 0, Math.PI * 2);
+        mctx.fillStyle = `rgba(${color}, ${alpha})`;
+        mctx.fill();
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    requestAnimationFrame(tick);
+  })();
+</script>
+
+</body>
+</html>
