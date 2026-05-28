@@ -101,12 +101,20 @@
 
   /* ── NAV ── */
   nav {
-    padding: 28px 48px;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 22px 48px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--rule);
+    background: rgba(5, 5, 7, 0.55);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
   }
+  /* Offset anchored sections so they stop just below the fixed nav */
+  #vision, #approche, #projets, #equipe { scroll-margin-top: 90px; }
   .logo {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
@@ -116,7 +124,11 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: opacity 0.3s;
   }
+  .logo:hover { opacity: 0.7; }
   .logo-mark {
     width: 24px; height: 24px;
     border: 1px solid var(--accent);
@@ -152,6 +164,88 @@
     transition: all 0.3s;
   }
   .nav-contact:hover { background: var(--accent); color: var(--bg) !important; }
+
+  /* ── HAMBURGER BUTTON (mobile only) ── */
+  .burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 120;
+  }
+  .burger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--ink);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  body.menu-open .burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  body.menu-open .burger span:nth-child(2) { opacity: 0; }
+  body.menu-open .burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── MOBILE MENU — RIGHT DRAWER ── */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+    background: rgba(0, 0, 0, 0);
+    visibility: hidden;
+    transition: background 0.4s ease, visibility 0.4s ease;
+  }
+  body.menu-open .mobile-menu {
+    visibility: visible;
+    background: rgba(0, 0, 0, 0.55);
+  }
+  .mobile-menu-links {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: min(80vw, 360px);
+    background: rgba(12, 12, 18, 0.96);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border-left: 1px solid var(--rule-strong);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 24px;
+    padding: 0 36px;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  body.menu-open .mobile-menu-links { transform: translateX(0); }
+  .mobile-menu-links > a {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .mobile-menu-links > a:hover { color: var(--accent); }
+  .mobile-menu-lang { margin-top: 8px; }
+  .mobile-menu-lang .lang-switch a { padding: 10px 16px; }
+  .mobile-menu-cta {
+    margin-top: 12px;
+    background: var(--accent);
+    color: var(--bg) !important;
+    padding: 16px 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    align-self: stretch;
+    text-align: center;
+  }
 
   /* ── LANGUAGE SWITCHER ── */
   .lang-switch {
@@ -238,11 +332,11 @@
 
   /* ── HERO ── */
   .hero {
-    padding: 76px 48px 100px;
-    min-height: auto;
+    padding: clamp(80px, 12vh, 160px) 48px clamp(60px, 10vh, 120px);
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     position: relative;
   }
   .hero-meta {
@@ -300,6 +394,107 @@
     flex-wrap: wrap;
     flex-shrink: 0;
   }
+
+  /* ── HERO RIGHT-COLUMN CARD (wide screens only) ── */
+  .hero-aside { display: none; } /* hidden by default — only shows > 1600px */
+
+  @media (min-width: 1600px) {
+    .hero {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(48px, 4vw, 96px);
+      padding-left: clamp(48px, 5vw, 120px);
+      padding-right: clamp(48px, 5vw, 120px);
+    }
+    .hero-left {
+      flex: 1 1 auto;
+      max-width: none;
+    }
+    h1.hero-title {
+      font-size: clamp(72px, 8vw, 160px);
+      max-width: none;
+    }
+    /* On wide screens, stack actions UNDER the text (right column takes the right space) */
+    .hero-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 40px;
+      max-width: 720px;
+    }
+    .hero-sub { max-width: 680px; font-size: 22px; }
+
+    /* The project card */
+    .hero-aside {
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 clamp(480px, 36vw, 820px);
+      width: clamp(480px, 36vw, 820px);
+      border: 1px solid var(--rule-strong);
+      background: linear-gradient(180deg, var(--bg-2), var(--bg-3));
+      text-decoration: none;
+      overflow: hidden;
+      transition: border-color 0.4s, transform 0.4s;
+      position: relative;
+    }
+    .hero-aside::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      z-index: 2;
+    }
+    .hero-aside:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .hero-aside-visual {
+      aspect-ratio: 16 / 9;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--bg-3), var(--bg));
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero-aside-visual img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-aside-visual::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 70px;
+      background: linear-gradient(180deg, rgba(5,5,7,0.55), transparent);
+      pointer-events: none;
+    }
+    .hero-aside-body {
+      padding: 36px 36px 38px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .hero-aside-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .hero-aside-name {
+      font-size: 44px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .hero-aside-name em { font-style: italic; color: var(--accent); font-weight: 500; }
+    .hero-aside-loc {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      transition: color 0.3s;
+    }
+    .hero-aside:hover .hero-aside-loc { color: var(--ink-soft); }
+  }
   .btn-primary {
     background: var(--accent);
     color: var(--bg);
@@ -356,25 +551,9 @@
     color: var(--accent-soft);
   }
 
-  /* ── SECTION DIVIDER ── */
-  .section-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.4em;
-    color: var(--accent);
-    text-align: center;
-    padding: 24px 0;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-  }
-  .section-num span {
-    margin: 0 8px;
-    color: var(--ink-faint);
-  }
-
   /* ── SECTION : VISION ── */
   .vision {
-    padding: 80px 48px;
+    padding: clamp(56px, 9vh, 120px) 48px;
   }
   .vision-grid {
     display: grid;
@@ -429,7 +608,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 80px 48px;
+    padding: clamp(56px, 9vh, 120px) 48px;
   }
   .vision-layout {
     display: grid;
@@ -480,68 +659,10 @@
   }
   .vision-side p strong { color: var(--ink); font-weight: 500; }
 
-  /* ── SIDE PAGINATION NAV (V5) ── */
-  .side-nav {
-    position: fixed;
-    right: 32px; top: 50%;
-    transform: translateY(-50%);
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 18px;
-  }
-  .side-nav a {
-    /* Fixed-size hit area built around the dot — labels are positioned absolutely so they don't push the dot around */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    color: var(--ink-faint);
-    transition: color 0.3s;
-    position: relative;
-    text-decoration: none;
-  }
-  .side-nav a .label {
-    position: absolute;
-    right: calc(100% + 12px);
-    top: 50%;
-    transform: translate(8px, -50%);
-    opacity: 0;
-    transition: opacity 0.3s, transform 0.3s;
-    background: rgba(5,5,7,0.8);
-    padding: 4px 10px;
-    backdrop-filter: blur(8px);
-    pointer-events: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: inherit;
-    white-space: nowrap;
-  }
-  .side-nav a:hover .label,
-  .side-nav a.active .label { opacity: 1; transform: translate(0, -50%); }
-  .side-nav a .dot {
-    width: 8px; height: 8px;
-    border: 1px solid var(--ink-faint);
-    border-radius: 50%;
-    background: transparent;
-    transition: all 0.3s;
-    flex-shrink: 0;
-  }
-  .side-nav a:hover .dot { border-color: var(--accent); }
-  .side-nav a.active .dot {
-    background: var(--accent);
-    border-color: var(--accent);
-    transform: scale(1.2);
-  }
-  .side-nav a.active { color: var(--accent); }
 
   /* ── SECTION : PILLARS ── */
   .pillars {
-    padding: 80px 48px;
+    padding: clamp(56px, 9vh, 120px) 48px;
     border-top: 1px solid var(--rule);
   }
   .pillars-head {
@@ -596,7 +717,7 @@
 
   /* ── SECTION : PROJECT (Latitude Samui) ── */
   .project {
-    padding: 80px 48px;
+    padding: clamp(56px, 9vh, 120px) 48px;
     border-top: 1px solid var(--rule);
     position: relative;
   }
@@ -845,7 +966,7 @@
 
   /* ── SECTION : CRYPTO ACCEPTED ── */
   .crypto-band {
-    padding: 80px 48px;
+    padding: clamp(56px, 9vh, 120px) 48px;
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
     background: var(--bg-2);
@@ -898,7 +1019,7 @@
 
   /* ── SECTION : ABOUT / FOUNDERS ── */
   .about {
-    padding: 80px 48px;
+    padding: clamp(56px, 9vh, 120px) 48px;
   }
   .about-grid {
     max-width: 1200px;
@@ -1143,8 +1264,9 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     nav { padding: 20px 24px; }
-    nav ul li:not(:last-child):not(.lang-item) { display: none; }
-    .hero { padding: 100px 24px 60px; }
+    nav ul { display: none; }
+    .burger { display: flex; }
+    .hero { padding: clamp(80px, 12vh, 120px) 24px clamp(48px, 8vh, 80px); }
     .hero-bottom { flex-direction: column; align-items: flex-start; gap: 32px; }
     .hero-sub { margin-bottom: 0; }
     .vision { padding: 80px 24px; }
@@ -1152,8 +1274,7 @@
     .vision.vision-stage { padding: 80px 24px; min-height: auto; }
     .vision-layout { grid-template-columns: 1fr; gap: 40px; }
     .vision-side { padding-left: 24px; }
-    .side-nav { right: 12px; }
-    .side-nav a .label { display: none; }
+
     .pillars { padding: 80px 24px; }
     .pillars-grid { grid-template-columns: 1fr; }
     .project { padding: 80px 24px; }
@@ -1170,6 +1291,36 @@
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; padding: 0 24px; }
     footer { padding: 40px 0 24px; }
     .footer-bottom { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
+  }
+  /* ════════════════════════════════════════════════
+     TECHNIQUE: @media (max-height) — resserre les espacements
+     verticaux sur les écrans COURTS (ex: MacBook 13"), sans
+     toucher aux écrans hauts (UW). Cible la hauteur, pas la largeur.
+     ════════════════════════════════════════════════ */
+  @media (max-height: 900px) {
+    /* Intros de section moins gourmandes en hauteur */
+    .pillars-head { margin: 0 auto 36px; }
+    .project-intro { margin: 0 auto 36px; }
+    .team-intro { margin: 0 auto 32px; }
+
+    /* Sections : padding vertical resserré */
+    .vision,
+    .vision.vision-stage,
+    .pillars,
+    .project,
+    .crypto-band,
+    .about {
+      padding-top: 48px;
+      padding-bottom: 48px;
+    }
+
+    /* Cartes projet : visuel un peu plus bas + texte compacté */
+    .project-tile .tile-visual { aspect-ratio: 16 / 10; }
+    .project-tile .tile-body { padding: 20px 22px 22px; gap: 10px; }
+
+    /* Piliers Approche et cartes Équipe : padding réduit */
+    .pillar { padding-top: 28px; padding-bottom: 28px; }
+    .team-card { padding: 24px 22px; gap: 12px; }
   }
 </style>
 </head>
@@ -1188,20 +1339,11 @@
   <button class="dismiss" id="lang-banner-dismiss" aria-label="Dismiss">✕</button>
 </div>
 
-<!-- SIDE PAGINATION (dot navigation) -->
-<nav class="side-nav" aria-label="Section navigation">
-  <a href="#hero" class="active" data-stage="hero"><span class="label">Home</span><span class="dot"></span></a>
-  <a href="#vision" data-stage="vision"><span class="label">Vision</span><span class="dot"></span></a>
-  <a href="#approche" data-stage="approche"><span class="label">Approach</span><span class="dot"></span></a>
-  <a href="#projets" data-stage="projets"><span class="label">Projects</span><span class="dot"></span></a>
-  <a href="#equipe" data-stage="equipe"><span class="label">Team</span><span class="dot"></span></a>
-</nav>
-
 <nav>
-  <div class="logo">
+  <a href="#hero" class="logo" aria-label="BlockEstate — back to top">
     <div class="logo-mark"></div>
     BlockEstate
-  </div>
+  </a>
   <ul>
     <li><a href="#vision">Vision</a></li>
     <li><a href="#approche">Approach</a></li>
@@ -1216,30 +1358,65 @@
     </li>
     <li><a href="mailto:contact@blockestate.com" class="nav-contact">Get in touch</a></li>
   </ul>
+
+  <!-- Hamburger button (mobile only) -->
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile menu panel -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <nav class="mobile-menu-links">
+    <a href="#vision">Vision</a>
+    <a href="#approche">Approach</a>
+    <a href="#projets">Projects</a>
+    <a href="#equipe">Team</a>
+    <div class="mobile-menu-lang">
+      <div class="lang-switch">
+        <a href="/blockestate/" class="active">EN</a>
+        <span class="sep"></span>
+        <a href="/blockestate/fr/">FR</a>
+      </div>
+    </div>
+    <a href="mailto:contact@blockestate.com" class="mobile-menu-cta">Get in touch</a>
+  </nav>
+</div>
 
 <main>
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <h1 class="hero-title">
-      Where real estate<br>meets <em>blockchain</em>.
-    </h1>
-    <div class="hero-bottom">
-      <p class="hero-sub">
-        BlockEstate is both an <strong>on-chain payment operator</strong> for real estate
-        acquisitions and a <strong>luxury villa developer</strong> through its
-        Latitude brands — Samui, Siquijor and Bali.
-      </p>
-      <div class="hero-actions">
-        <a href="#projets" class="btn-primary">Explore our projects</a>
-        <a href="#vision" class="btn-ghost">Our approach →</a>
+    <div class="hero-left">
+      <h1 class="hero-title">
+        Where real estate<br>meets <em>blockchain</em>.
+      </h1>
+      <div class="hero-bottom">
+        <p class="hero-sub">
+          BlockEstate is both an <strong>on-chain payment operator</strong> for real estate
+          acquisitions and a <strong>luxury villa developer</strong> through its
+          Latitude brands — Samui, Siquijor and Bali.
+        </p>
+        <div class="hero-actions">
+          <a href="#projets" class="btn-primary">Explore our projects</a>
+          <a href="#vision" class="btn-ghost">Our approach →</a>
+        </div>
       </div>
     </div>
+
+    <!-- Right column: current project showcase (visible on wide screens only) -->
+    <a href="https://lzn-hash.github.io/maisons-samui/" target="_blank" rel="noopener" class="hero-aside">
+      <div class="hero-aside-visual">
+        <img src="pictures/(1).jpg" alt="Latitude Samui — current villa development on Koh Samui" loading="lazy">
+      </div>
+      <div class="hero-aside-body">
+        <div class="hero-aside-tag">● Our current development</div>
+        <div class="hero-aside-name">Latitude <em>Samui</em></div>
+        <div class="hero-aside-loc">Koh Samui · Thailand → Visit the project</div>
+      </div>
+    </a>
   </section>
 
-  <!-- I -->
-  <div class="section-num">— <span>I</span> — VISION</div>
 
   <section class="vision vision-stage" id="vision">
     <div class="vision-layout">
@@ -1270,8 +1447,6 @@
     </div>
   </section>
 
-  <!-- II -->
-  <div class="section-num">— <span>II</span> — APPROACH</div>
 
   <section class="pillars" id="approche">
     <div class="pillars-head">
@@ -1315,8 +1490,6 @@
     </div>
   </section>
 
-  <!-- III -->
-  <div class="section-num">— <span>III</span> — PROJECTS</div>
 
   <section class="project" id="projets">
     <div class="project-intro">
@@ -1444,8 +1617,6 @@
     </div>
   </div>
 
-  <!-- IV -->
-  <div class="section-num">— <span>IV</span> — TEAM</div>
 
   <section class="about" id="equipe">
     <div class="team-intro">
@@ -1454,8 +1625,7 @@
       <p>
         BlockEstate is a <strong>young company</strong> — and we believe in it
         precisely because three of us founded it together, with complementary
-        skills and field experience that speaks for itself. No token to buy, no
-        abstract promise — just three entrepreneurs and tangible projects.
+        skills and field experience that speaks for itself.
       </p>
     </div>
 
@@ -1701,22 +1871,34 @@
     requestAnimationFrame(tick);
   })();
 
-  // Side-nav active state on scroll (V5 dot navigation)
+  // Mobile hamburger menu toggle
   (function() {
-    const links = document.querySelectorAll('.side-nav a');
-    const stages = ['hero', 'vision', 'approche', 'projets', 'equipe'];
-    function update() {
-      const scroll = window.scrollY + window.innerHeight * 0.35;
-      let activeIdx = 0;
-      stages.forEach((id, idx) => {
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= scroll) activeIdx = idx;
-      });
-      links.forEach((l, idx) => l.classList.toggle('active', idx === activeIdx));
+    var burger = document.getElementById('burger');
+    var menu = document.getElementById('mobileMenu');
+    if (!burger || !menu) return;
+    function closeMenu() {
+      document.body.classList.remove('menu-open');
+      burger.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
     }
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update, { passive: true });
-    update();
+    function toggleMenu() {
+      var open = document.body.classList.toggle('menu-open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+    burger.addEventListener('click', toggleMenu);
+    // Close when a link inside the menu is tapped
+    menu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', closeMenu);
+    });
+    // Close when tapping the dark overlay (outside the panel)
+    menu.addEventListener('click', function(e) {
+      if (e.target === menu) closeMenu();
+    });
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeMenu();
+    });
   })();
 
   // Language switcher: remember user's manual choice
