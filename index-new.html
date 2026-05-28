@@ -124,7 +124,11 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: opacity 0.3s;
   }
+  .logo:hover { opacity: 0.7; }
   .logo-mark {
     width: 24px; height: 24px;
     border: 1px solid var(--accent);
@@ -1205,6 +1209,36 @@
     footer { padding: 40px 0 24px; }
     .footer-bottom { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
   }
+  /* ════════════════════════════════════════════════
+     TECHNIQUE: @media (max-height) — resserre les espacements
+     verticaux sur les écrans COURTS (ex: MacBook 13"), sans
+     toucher aux écrans hauts (UW). Cible la hauteur, pas la largeur.
+     ════════════════════════════════════════════════ */
+  @media (max-height: 900px) {
+    /* Intros de section moins gourmandes en hauteur */
+    .pillars-head { margin: 0 auto 36px; }
+    .project-intro { margin: 0 auto 36px; }
+    .team-intro { margin: 0 auto 32px; }
+
+    /* Sections : padding vertical resserré */
+    .vision,
+    .vision.vision-stage,
+    .pillars,
+    .project,
+    .crypto-band,
+    .about {
+      padding-top: 48px;
+      padding-bottom: 48px;
+    }
+
+    /* Cartes projet : visuel un peu plus bas + texte compacté */
+    .project-tile .tile-visual { aspect-ratio: 16 / 10; }
+    .project-tile .tile-body { padding: 20px 22px 22px; gap: 10px; }
+
+    /* Piliers Approche et cartes Équipe : padding réduit */
+    .pillar { padding-top: 28px; padding-bottom: 28px; }
+    .team-card { padding: 24px 22px; gap: 12px; }
+  }
 </style>
 </head>
 <body>
@@ -1223,10 +1257,10 @@
 </div>
 
 <nav>
-  <div class="logo">
+  <a href="#hero" class="logo" aria-label="BlockEstate — back to top">
     <div class="logo-mark"></div>
     BlockEstate
-  </div>
+  </a>
   <ul>
     <li><a href="#vision">Vision</a></li>
     <li><a href="#approche">Approach</a></li>
@@ -1485,8 +1519,7 @@
       <p>
         BlockEstate is a <strong>young company</strong> — and we believe in it
         precisely because three of us founded it together, with complementary
-        skills and field experience that speaks for itself. No token to buy, no
-        abstract promise — just three entrepreneurs and tangible projects.
+        skills and field experience that speaks for itself.
       </p>
     </div>
 
