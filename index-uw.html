@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlockEstate — Real estate, on-chain (snap)</title>
+<title>BlockEstate — Real estate, on-chain (UW test)</title>
 <script>
   // Auto language detection — runs BEFORE rendering to avoid flash.
   // English is the default. If browser prefers French AND user hasn't made a manual choice yet, redirect to /fr/.
@@ -46,19 +46,13 @@
     --rule-strong: rgba(244, 241, 234, 0.18);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html {
-    scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
-    overflow-x: hidden;
-  }
-  body {
-    scroll-snap-type: y mandatory;
-  }
+  html { scroll-behavior: smooth; }
   html, body {
     background: var(--bg);
     color: var(--ink);
     font-family: 'Chakra Petch', sans-serif;
     font-weight: 300;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
   .mono { font-family: 'JetBrains Mono', monospace; font-weight: 300; letter-spacing: 0.08em; }
@@ -250,7 +244,6 @@
     flex-direction: column;
     justify-content: center;
     position: relative;
-    scroll-snap-align: start;
   }
   .hero-meta {
     font-family: 'JetBrains Mono', monospace;
@@ -306,6 +299,103 @@
     align-items: center;
     flex-wrap: wrap;
     flex-shrink: 0;
+  }
+
+  /* ── HERO RIGHT-COLUMN CARD (wide screens only) ── */
+  .hero-aside { display: none; } /* hidden by default — only shows > 1600px */
+
+  @media (min-width: 1600px) {
+    .hero {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(48px, 6vw, 120px);
+      padding-left: clamp(48px, 5vw, 120px);
+      padding-right: clamp(48px, 5vw, 120px);
+    }
+    .hero-left {
+      flex: 1 1 auto;
+      max-width: 1100px;
+    }
+    /* On wide screens, stack actions UNDER the text (right column takes the right space) */
+    .hero-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 40px;
+      max-width: 640px;
+    }
+    .hero-sub { max-width: 560px; }
+
+    /* The project card */
+    .hero-aside {
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 380px;
+      width: 380px;
+      border: 1px solid var(--rule-strong);
+      background: linear-gradient(180deg, var(--bg-2), var(--bg-3));
+      text-decoration: none;
+      overflow: hidden;
+      transition: border-color 0.4s, transform 0.4s;
+      position: relative;
+    }
+    .hero-aside::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      z-index: 2;
+    }
+    .hero-aside:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .hero-aside-visual {
+      aspect-ratio: 4 / 3;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--bg-3), var(--bg));
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero-aside-visual img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-aside-visual::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 70px;
+      background: linear-gradient(180deg, rgba(5,5,7,0.55), transparent);
+      pointer-events: none;
+    }
+    .hero-aside-body {
+      padding: 28px 28px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .hero-aside-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .hero-aside-name {
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .hero-aside-name em { font-style: italic; color: var(--accent); font-weight: 500; }
+    .hero-aside-loc {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      transition: color 0.3s;
+    }
+    .hero-aside:hover .hero-aside-loc { color: var(--ink-soft); }
   }
   .btn-primary {
     background: var(--accent);
@@ -373,9 +463,6 @@
     padding: 24px 0;
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    scroll-margin-top: 0;
   }
   .section-num span {
     margin: 0 8px;
@@ -1232,20 +1319,34 @@
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <h1 class="hero-title">
-      Where real estate<br>meets <em>blockchain</em>.
-    </h1>
-    <div class="hero-bottom">
-      <p class="hero-sub">
-        BlockEstate is both an <strong>on-chain payment operator</strong> for real estate
-        acquisitions and a <strong>luxury villa developer</strong> through its
-        Latitude brands — Samui, Siquijor and Bali.
-      </p>
-      <div class="hero-actions">
-        <a href="#projets" class="btn-primary">Explore our projects</a>
-        <a href="#vision" class="btn-ghost">Our approach →</a>
+    <div class="hero-left">
+      <h1 class="hero-title">
+        Where real estate<br>meets <em>blockchain</em>.
+      </h1>
+      <div class="hero-bottom">
+        <p class="hero-sub">
+          BlockEstate is both an <strong>on-chain payment operator</strong> for real estate
+          acquisitions and a <strong>luxury villa developer</strong> through its
+          Latitude brands — Samui, Siquijor and Bali.
+        </p>
+        <div class="hero-actions">
+          <a href="#projets" class="btn-primary">Explore our projects</a>
+          <a href="#vision" class="btn-ghost">Our approach →</a>
+        </div>
       </div>
     </div>
+
+    <!-- Right column: current project showcase (visible on wide screens only) -->
+    <a href="https://lzn-hash.github.io/maisons-samui/" target="_blank" rel="noopener" class="hero-aside">
+      <div class="hero-aside-visual">
+        <img src="pictures/(1).jpg" alt="Latitude Samui — current villa development on Koh Samui" loading="lazy">
+      </div>
+      <div class="hero-aside-body">
+        <div class="hero-aside-tag">● Our current development</div>
+        <div class="hero-aside-name">Latitude <em>Samui</em></div>
+        <div class="hero-aside-loc">Koh Samui · Thailand → Visit the project</div>
+      </div>
+    </a>
   </section>
 
   <!-- I -->
